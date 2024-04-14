@@ -1,10 +1,18 @@
 import time
 
+#### f(x) = x^2
+# def function(x):
+#     return x ** 2
+
+# def derivative(x):
+#     return 2 * x
+
+#### f(x) = x^4
 def function(x):
-    return x ** 2
+    return x**4
 
 def derivative(x):
-    return 2 * x
+    return 4 * x**3
 
 def gradient_descent(starting_point, learning_rate, threshold, max_step):
     x = starting_point
@@ -21,7 +29,7 @@ def gradient_descent(starting_point, learning_rate, threshold, max_step):
         ite_start_time = time.time()
         exec_time = ite_start_time - start_time
         
-        print(f"{step} | {exec_time:<2.10f} | {x:<2.10f} | {f_x:<2.16f}")
+        print(f"{step} | {exec_time:<2.4f} | {x:<2.4f} | {f_x:<2.4f} | {f_derivative_x:<2.4f}")
         
         x = x - learning_rate * f_derivative_x
         if abs(f_derivative_x) < threshold:
@@ -29,11 +37,13 @@ def gradient_descent(starting_point, learning_rate, threshold, max_step):
             
         step += 1
     
+    total_time = time.time() - start_time
     print("Finish. Steps required: ",step)
+    print(f"Total execution time: {total_time:.10f} seconds")
 
 starting_point = 10.0 
-learning_rate = 0.1  
-threshold = 1e-6 
-max_step = 100 
+learning_rate = 0.004 
+threshold = 1e-2 
+max_step = 10000
 
 gradient_descent(starting_point, learning_rate, threshold, max_step)
