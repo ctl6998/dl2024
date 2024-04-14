@@ -12,9 +12,9 @@ def main():
      x = str(input("\nEnter X column name : "))
      y = str(input("\nEnter Y column name : "))
      
-     coeff = random.randrange(-10, 10)
+     coeff = random.randrange(0, 2)
 
-     intercept = random.randrange(-100, 100)
+     intercept = random.randrange(0, 1)
      
      path = str("./")
      
@@ -32,11 +32,11 @@ def main():
                  list = [x , y]
                  spamwriter.writerow(list)
                  continue
-             x = random.randrange(-100, 100)
+             x = random.randrange(0, 5)
     
              y = coeff*x + intercept
     
-             shuffle = random.randrange(-200, 200)
+             shuffle = random.randrange(0, 5)
     
              y += shuffle
              
