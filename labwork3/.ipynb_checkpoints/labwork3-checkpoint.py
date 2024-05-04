@@ -39,7 +39,7 @@ def gradientDescend2d(param0, param1, param2, L, t, f, d_w0, d_w1, d_w2):
         w2 = w2 - L * d_w2(w0, w1, w2)
         newF = f(w0, w1, w2)
         check = abs(newF - oldF)
-        print(f"Iteration: {iteration}\t\tw0:{round(w0, 2)}\t\tw1:{round(w1, 2)}\t\tw2:{round(w2, 2)}\t\tLoss change:{round(check, 4)}")
+        print(f"Iteration: {iteration}\t\tw0:{round(w0, 2)}\t\tw1:{round(w1, 2)}\t\tw2:{round(w2, 2)}\t\tLoss change:{round(newF,4)}-{round(oldF,4)}={round(check, 4)}")
         iteration += 1
         if check < t:
             print("Finished")
@@ -68,12 +68,12 @@ loss_w2 = lambda dataset, w0, w1, w2: sum( [diff_w2(w0, w1, w2, data[0], data[1]
 
 # Logistic Regression    
 def logisticRegression(dataset):
-    w0, w1, w2 = 0.1, 0.1, 0.1
+    w0, w1, w2 = 0, 0.05, 0.005
     f = lambda w0, w1, w2: loss(dataset, w0, w1, w2)
     d_w0 = lambda w0, w1, w2: loss_w0(dataset, w0, w1, w2)
     d_w1 = lambda w0, w1, w2: loss_w1(dataset, w0, w1, w2)
     d_w2 = lambda w0, w1, w2: loss_w2(dataset, w0, w1, w2)
-    (w0, w1, w2) = gradientDescend2d(w0, w1, w2, 0.001 , 0.01, f, d_w0, d_w1, d_w2)
+    (w0, w1, w2) = gradientDescend2d(w0, w1, w2, 0.00001 , 0.01, f, d_w0, d_w1, d_w2)
     return (w0, w1, w2)
 
 # Run
