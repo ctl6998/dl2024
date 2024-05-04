@@ -15,7 +15,7 @@ def gradientDescend2d(param0, param1, L, t, f, d_w0, d_w1):
         w1 = w1 - L * d_w1(w0, w1)
         newF = f(w0, w1)
         diff = abs(newF - oldF)
-        print(f"{round(w1, 2)}\t\t{round(w1, 2)}\t\t{round(newF, 2)}\t\t{round(oldF, 2)}\t\t{round(diff, 2)}")
+        print(f"{round(w0, 2)}\t\t{round(w1, 2)}\t\t{round(newF, 2)}\t\t{round(oldF, 2)}\t\t{round(diff, 2)}")
         if diff < t:
             print("Finished")
             return (w0, w1)
@@ -26,9 +26,9 @@ diff_w0 = lambda w0, w1, xi, yi: w1 * xi + w0 - yi
 diff_w1 = lambda w0, w1, xi, yi: xi * (w1 * xi + w0 - yi)
 
 # loss functions 
-loss = lambda dataset, w0, w1: sum( [diff(w0, w1, data[0], data[1]) for data in dataset] )
-loss_w0 = lambda dataset, w0, w1: sum( [diff_w0(w0, w1, data[0], data[1]) for data in dataset] )
-loss_w1 = lambda dataset, w0, w1: sum( [diff_w1(w0, w1, data[0], data[1]) for data in dataset] )
+loss = lambda dataset, w0, w1: sum( [diff(w0, w1, data[0], data[1]) for data in dataset] ) / len(DATASET)
+loss_w0 = lambda dataset, w0, w1: sum( [diff_w0(w0, w1, data[0], data[1]) for data in dataset] ) / len(DATASET)
+loss_w1 = lambda dataset, w0, w1: sum( [diff_w1(w0, w1, data[0], data[1]) for data in dataset] ) / len(DATASET)
 
 def linearRegression(dataset):
     w0, w1 = 0, 1

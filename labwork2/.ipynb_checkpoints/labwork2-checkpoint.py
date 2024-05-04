@@ -56,14 +56,3 @@ learning_rate = 0.1
 threshold = 1e-2
 optimized_w1, optimized_w0, step = gradient_descent(x, y,w0 , w1, num_iterations, learning_rate, threshold)
 print(f"Optimized w1: {optimized_w1:.4f}, w0: {optimized_w0:.4f}, step: {step}")
-
-##################
-# print(m)
-# test = compute_loss(x,y,w1,w0)
-# print(test)
-# w1_grad_test,w0_grad_test = compute_gradients(x,y,w1,w0)
-# print(w1_grad_test,w0_grad_test)
-# w1_update_test,w0_update_test = update_parameters(w1, w0, w1_grad_test, w0_grad_test, learning_rate)
-# print(w1_update_test,w0_update_test)
-# loss = compute_loss(x,y,w1_update_test,w0_update_test)
-# print(loss)
