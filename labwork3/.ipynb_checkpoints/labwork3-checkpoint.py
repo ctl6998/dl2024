@@ -27,7 +27,7 @@ DATASET = [
 # L: learning rate
 # t: threshold
 # f: loss function
-def gradientDescend2d(param0, param1, param2, L, t, f, d_w0, d_w1, d_w2):
+def gradientDescend3d(param0, param1, param2, L, t, f, d_w0, d_w1, d_w2):
     w0 = param0
     w1 = param1
     w2 = param2
