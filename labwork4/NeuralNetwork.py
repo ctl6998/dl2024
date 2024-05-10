@@ -94,7 +94,7 @@ class LayerLink(Base):
         LayerLink.id += 1
         self.fromLayer = fromLayer
         self.toLayer = toLayer
-        self.links = [] #link = tuple(fromNeuron, toNeun, weight)
+        self.links = [] #link = (fromNeuron, toNeun, weight)
         for i in range(len(fromLayer.neurons)):
             for j in range(len(toLayer.neurons)):
                 link = Link(fromLayer.neurons[i], toLayer.neurons[j], random.random()) #randomize weight
