@@ -1,6 +1,7 @@
 import math
 import random
 
+#Activate function declaration
 def sigmoid(z):
     return 1 / (1 + math.exp(-z))
 
@@ -37,6 +38,22 @@ class Neuron(Base):
     def forward(self):
         return self.output
     
+#For bias
+class BiasNeuron(Base):
+    def __init__(self):
+        pass
+    
+
+class Link(Base):
+    id = 0
+    def __init__(self, fromNeuron, toNeuron, weight=0):
+        self.id = f"{self.__class__.__name__}{Link.id}"
+        Link.id += 1
+        self.fromNeuron = fromNeuron
+        self.toNeuron = toNeuron
+        self.weight = weight
+            
+    
 class Layer(Base):
     id = 0
     def __init__(self, nodes, activation=sigmoid):
@@ -63,20 +80,12 @@ class Layer(Base):
                 if link.toNeuron == neuron:
                     weights.append(link.weight)
                     outputs.append(link.fromNeuron.output)
-                    self.log(f"{link.fromNeuron.id}->{neuron.id}: {link.weight:.2f}")
+                    self.log(f"{link.fromNeuron.id} -> {neuron.id}: (weight: {link.weight:.2f})")
             z = neuron.linearSum(weights, outputs)
             neuron.output = neuron.activate(z)
             neuron.log(f"{neuron.id} output: z={z:.2f}, a={neuron.output:.2f}")
         return [neuron.output for neuron in self.neurons]
-    
-class Link(Base):
-    id = 0
-    def __init__(self, fromNeuron, toNeuron, weight=0):
-        self.id = f"{self.__class__.__name__}{Link.id}"
-        Link.id += 1
-        self.fromNeuron = fromNeuron
-        self.toNeuron = toNeuron
-        self.weight = weight
+                    
         
 class LayerLink(Base):
     id = 0
@@ -95,8 +104,8 @@ class LayerLink(Base):
         self.log(f"{len(self.links)} links from {self.fromLayer.id} to {self.toLayer.id}")
         for link in self.links:
             self.log(f"{link.fromNeuron.id} -> {link.toNeuron.id} ({link.weight:.2f})")
-                            
-                    
+            
+            
 class Network(Base):
     id = 0
     def __init__(self, config="config.txt"):
@@ -113,7 +122,7 @@ class Network(Base):
             layer.describe()
                             
     def parseConfig(self, config):
-        self.log("Reading config file")
+        self.log("======Reading config file======")
         with open(config, "r") as f:
             lines = f.readlines()
             lines = [line.strip() for line in lines if line and not line.startswith("#")]
@@ -129,10 +138,22 @@ class Network(Base):
             lastLayer = self.layers[i - 1]
             nextLayer = self.layers[i]
             self.layerLinks.append(LayerLink(lastLayer, nextLayer))
-        self.log("Finished configuration")
+            
+        # Init weights
+        for i, layerLink in enumerate(self.layerLinks):
+            weightStr = lines[n + 1 + i].strip().split(",")
+            weights = [float(w.strip()) for w in weightStr]
+            if len(weights) != len(layerLink.links):
+                raise ValueError(f"LayerLink {layerLink.id} does not match with weights in line {n+1+i}")
+            else:
+                for j, link in enumerate(layerLink.links):
+                    link.weight = weights[j]
+
+            
+        self.log("======FINISHED CONFIGURATION======")
                             
     def forward(self, inputs):
-        self.log("Foward pass")
+        self.log("======FORWARDING=======")
         if len(inputs) != len(self.layers[0].neurons):
             raise ValueError("Number of input neurons does not match the size of input data")
         for i in range(len(inputs)):
@@ -153,8 +174,10 @@ if __name__ == "__main__":
     ]
     
     for inputs in input_set:
+        print("Running network on inputs:")
+        print("Input:", inputs)
         network.forward(inputs)
         output_layer = network.layers[-1]
         output_values = [neuron.output for neuron in output_layer.neurons]
-        print("Input:", inputs)
         print("Output values:", output_values)
+        print(f"================================================")
