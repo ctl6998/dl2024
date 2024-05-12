@@ -214,7 +214,8 @@ class Network(Base):
 
         # Compute gradients and deltas for hidden layers
         hidden_deltas = [output_deltas]
-        hidden_derivatives = [output_derivatives]
+        # Derivatives can be used for threshold
+        # hidden_derivatives = [output_derivatives]
 
         for i in range(len(self.layers) - 2, 0, -1):
             layer = self.layers[i]
@@ -231,10 +232,11 @@ class Network(Base):
                     hidden_deltas[-1][k] * next((link.weight for link in self.layerLinks[i].links if link.fromNeuron == neuron and link.toNeuron == next_layer.neurons[k]), 0)
                     for k in range(len(next_layer.neurons))
                 )
+                # delta_l = (W_(l+1)^T * delta_(l+1)) * f'(z_l)
                 layer_deltas.append(error * derivative)
 
             hidden_deltas.append(layer_deltas)
-            hidden_derivatives.append(layer_derivatives)
+            # hidden_derivatives.append(layer_derivatives)
 
         # Update weights
         for i in range(len(self.layers) - 1, 0, -1):
@@ -249,6 +251,7 @@ class Network(Base):
                     prev_neuron = prev_layer.neurons[k]
                     link = next((link for link in self.layerLinks[i - 1].links if link.fromNeuron == prev_neuron and link.toNeuron == neuron), None)
                     old_weight = link.weight
+                    # W_l = W_l - learning_rate * gradient = W_l - learning_rate * delta * prev_neuron.output
                     link.weight += learning_rate * delta * prev_neuron.output
                     self.log(f"Updated weight: {prev_neuron.id} -> {neuron.id}: {old_weight:.4f} -> {link.weight:.4f}")
 
@@ -259,7 +262,7 @@ class Network(Base):
                 self.log(f"Updated bias weight: {prev_layer.bias_neuron.id} -> {neuron.id}: {old_bias_weight:.4f} -> {bias_link.weight:.4f}")
 
     def train(self, inputs, targets, epochs, learning_rate):
-        for i in range(epochs):
+        for i in range(epochs + 1):
             print(f"====================RUNNING EPOCH {i}====================")
             for inputs, targets in zip(input_set, target_set):
                 print(f"=======================================================")
