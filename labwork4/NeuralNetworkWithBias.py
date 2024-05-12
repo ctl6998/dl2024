@@ -126,7 +126,7 @@ class LayerLink(Base):
         LayerLink.id += 1
         self.fromLayer = fromLayer
         self.toLayer = toLayer
-        self.links = [] #link = (fromNeuron, toNeun, weight)
+        self.links = [] #link = (fromNeuron, toNeuron, weight)
         if hasattr(fromLayer, 'bias_neuron'):
             for j in range(len(toLayer.neurons)):
                 link = Link(fromLayer.bias_neuron, toLayer.neurons[j], random.random()) #randomize weight
@@ -208,6 +208,7 @@ class Network(Base):
         # Compute output layer gradients
         output_derivatives = [sigmoid_derivative(neuron.output) for neuron in self.layers[-1].neurons]
         output_deltas = [(
+                # Loss compare to give target
                 targets[i] - self.layers[-1].neurons[i].output) * output_derivatives[i] 
                 for i in range(len(self.layers[-1].neurons)
         )]
