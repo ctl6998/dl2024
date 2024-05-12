@@ -14,17 +14,18 @@ class Base:
     
     def log(self, message):
         print(f"{self.id}: {message}")
-    
+        
     def __str__(self):
         return self.id
     
 class Neuron(Base):
     id = 0
-    def __init__(self, activation=sigmoid):
+    def __init__(self, activation=sigmoid, isBias = False):
         self.id = f'{self.__class__.__name__}{Neuron.id}'
         Neuron.id += 1
         self.activation = activation
-        self.output = 0
+        self.isBias = isBias
+        self.output = 1 if isBias else 0
     
     def describe(self):
         self.log(f'Activation {self.activation.__name__}')
@@ -37,6 +38,10 @@ class Neuron(Base):
     
     def forward(self):
         return self.output
+    
+    def setOutput(self, output):
+        if not self.isBias:
+            self.output = output
     
 #For bias
 class BiasNeuron(Base):
@@ -52,18 +57,37 @@ class Link(Base):
         self.fromNeuron = fromNeuron
         self.toNeuron = toNeuron
         self.weight = weight
-            
+        
+class LayerLink(Base):
+    id = 0
+    def __init__(self, fromLayer, toLayer, weights=[]):
+        self.id = f"{self.__class__.__name__}{LayerLink.id}"
+        LayerLink.id += 1
+        self.fromLayer = fromLayer
+        self.toLayer = toLayer
+        self.links = [] #link = (fromNeuron, toNeuron, weight)
+        for i in range(len(fromLayer.neurons)):
+            for j in range(len(toLayer.neurons)):
+                if (toLayer.neurons[j].isBias):
+                    continue
+                link = Link(fromLayer.neurons[i], toLayer.neurons[j], random.random()) #randomize weight
+                self.links.append(link)
     
+    def describe(self):
+        self.log(f"{len(self.links)} links from {self.fromLayer.id} to {self.toLayer.id}")
+        for link in self.links:
+            self.log(f"{link.fromNeuron.id}->{link.toNeuron.id} ({link.weight:.2f})")
+            
 class Layer(Base):
     id = 0
     def __init__(self, nodes, activation=sigmoid):
         self.id = f"{self.__class__.__name__}{Layer.id}"
         Layer.id += 1
-        self.bias = 1
-        self.neurons = [Neuron(activation) for _ in range(nodes)]
+        self.weights = []
+        self.neurons = [Neuron(activation, True)] + [Neuron(activation) for _ in range(nodes)]
         
     def describe(self):
-        self.log(f"{len(self.neurons)} neurons")
+        self.log(f"Layer has {len(self.neurons)} neurons")
         for neuron in self.neurons:
             neuron.describe()
             
@@ -84,27 +108,7 @@ class Layer(Base):
             z = neuron.linearSum(weights, outputs)
             neuron.output = neuron.activate(z)
             neuron.log(f"{neuron.id} output: z={z:.2f}, a={neuron.output:.2f}")
-        return [neuron.output for neuron in self.neurons]
-                    
-        
-class LayerLink(Base):
-    id = 0
-    def __init__(self, fromLayer, toLayer, weights=[]):
-        self.id = f"{self.__class__.__name__}{LayerLink.id}"
-        LayerLink.id += 1
-        self.fromLayer = fromLayer
-        self.toLayer = toLayer
-        self.links = [] #link = (fromNeuron, toNeun, weight)
-        for i in range(len(fromLayer.neurons)):
-            for j in range(len(toLayer.neurons)):
-                link = Link(fromLayer.neurons[i], toLayer.neurons[j], random.random()) #randomize weight
-                self.links.append(link)
-    
-    def describe(self):
-        self.log(f"{len(self.links)} links from {self.fromLayer.id} to {self.toLayer.id}")
-        for link in self.links:
-            self.log(f"{link.fromNeuron.id} -> {link.toNeuron.id} ({link.weight:.2f})")
-            
+        return [neuron.output for neuron in self.neurons]    
             
 class Network(Base):
     id = 0
@@ -117,7 +121,7 @@ class Network(Base):
     
     def describe(self):
         self.log(f"Start describing network {self.id}")
-        self.log(f"{self.id}: {len(self.layers)}: layers")
+        self.log(f"{self.id}: {len(self.layers)} layers")
         for layer in self.layers:
             layer.describe()
                             
@@ -132,17 +136,24 @@ class Network(Base):
         for i in range(1, n + 1):
             nodes = int(lines[i])
             self.layers.append(Layer(nodes))
+        print(f"Number of layer from config:", len(self.layers))
                             
         # Init links
         for i in range(1, len(self.layers)):
             lastLayer = self.layers[i - 1]
             nextLayer = self.layers[i]
             self.layerLinks.append(LayerLink(lastLayer, nextLayer))
+        
+        print(f"Showing all links:")
+        for layerLink in self.layerLinks:
+            layerLink.describe()
             
         # Init weights
         for i, layerLink in enumerate(self.layerLinks):
             weightStr = lines[n + 1 + i].strip().split(",")
             weights = [float(w.strip()) for w in weightStr]
+            print(f"Weights from config:", weights)
+            print(f"Layer links:", len(layerLink.links))
             if len(weights) != len(layerLink.links):
                 raise ValueError(f"LayerLink {layerLink.id} does not match with weights in line {n+1+i}")
             else:
@@ -173,11 +184,11 @@ if __name__ == "__main__":
         [1, 1] 
     ]
     
-    for inputs in input_set:
-        print("Running network on inputs:")
-        print("Input:", inputs)
-        network.forward(inputs)
-        output_layer = network.layers[-1]
-        output_values = [neuron.output for neuron in output_layer.neurons]
-        print("Output values:", output_values)
-        print(f"================================================")
+    # for inputs in input_set:
+    #     print(f"================================================")
+    #     print("Running network on inputs:", inputs)
+    #     network.forward(inputs)
+    #     output_layer = network.layers[-1]
+    #     output_values = [neuron.output for neuron in output_layer.neurons]
+    #     print("Output values:", output_values)
+    #     print(f"================================================")
