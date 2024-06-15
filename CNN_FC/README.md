@@ -4,7 +4,9 @@ This project implements a Convolutional Neural Network (CNN) and a Neural Networ
 
 ### How to Run 
 cd /path/to/CNN_FC/src
+
 python mnist/mnist_cnn.py
+
 python mnist/mnist_nn.py
 
 
