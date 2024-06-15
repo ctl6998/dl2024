@@ -26,80 +26,80 @@ from helper import Helper
 
 
 
-#### FOWARDING
-# input_data = [
-#     [[1, 2, 0, 1],
-#      [0, 1, 2, 3],
-#      [3, 0, 1, 2],
-#      [2, 3, 0, 1]],
-#     [[0, 1, 0, 1],
-#      [2, 2, 2, 2],
-#      [3, 3, 3, 3],
-#      [1, 1, 1, 1]]
-# ]
+### FOWARDING
+input_data = [
+    [[1, 2, 0, 1],
+     [0, 1, 2, 3],
+     [3, 0, 1, 2],
+     [2, 3, 0, 1]],
+    [[0, 1, 0, 1],
+     [2, 2, 2, 2],
+     [3, 3, 3, 3],
+     [1, 1, 1, 1]]
+]
 
-# input_shape = (2, 4, 4)  # Example input shape (depth, height, width)
-# kernel_size = 3 # Example kernel size
-# depth = 3 # Example number of filters
+input_shape = (2, 4, 4)  # Example input shape (depth, height, width)
+kernel_size = 3 # Example kernel size
+depth = 3 # Example number of filters
 
 
-# conv_layer = Convolutional(input_shape, kernel_size, depth, mode='valid')
-# #Fowarding
-# print(":::::::::::::::::Forwarding:::::::::::::::::")
-# output = conv_layer.forward(input_data)
-# for layer in output:
-#     print("Matrix")
-#     for row in layer:
-#         print(row)
+conv_layer = Convolutional(input_shape, kernel_size, depth, mode='valid')
+#Fowarding
+print(":::::::::::::::::Forwarding:::::::::::::::::")
+output = conv_layer.forward(input_data)
+for layer in output:
+    print("Matrix")
+    for row in layer:
+        print(row)
 
-#### Backwarding
-# output_gradient = [
-#     Helper.create_random_matrix(len(output[0]), len(output[0][0]))
-#     for _ in range(len(output))
-# ]
-# print(":::::::::::::::::EXAMPLE: Output gradient:::::::::::::::::")
-# for layer in output_gradient:
-#     print("Matrix")
-#     for row in layer:
-#         print(row)
-# print(":::::::::::::::::Backwarding:::::::::::::::::")
-# input_backprop = conv_layer.backward(output_gradient, learning_rate=0.0001)
-# for layer in input_backprop:
-#     print("Matrix")
-#     for row in layer:
-#         print(row)
+### Backwarding
+output_gradient = [
+    Helper.create_random_matrix(len(output[0]), len(output[0][0]))
+    for _ in range(len(output))
+]
+print(":::::::::::::::::EXAMPLE: Output gradient:::::::::::::::::")
+for layer in output_gradient:
+    print("Matrix")
+    for row in layer:
+        print(row)
+print(":::::::::::::::::Backwarding:::::::::::::::::")
+input_backprop = conv_layer.backward(output_gradient, learning_rate=0.0001)
+for layer in input_backprop:
+    print("Matrix")
+    for row in layer:
+        print(row)
 
 #########################################################################################################
 #### Reshape
-from reshape import Reshape
-input_shape = (2, 3, 4)  # Example input shape (depth, height, width)
-output_shape = (24, 1)  # Example output shape (height, width)
+# from reshape import Reshape
+# input_shape = (2, 3, 4)  # Example input shape (depth, height, width)
+# output_shape = (24, 1)  # Example output shape (height, width)
 
-reshape_layer = Reshape(input_shape, output_shape)
+# reshape_layer = Reshape(input_shape, output_shape)
 
-input_data = [
-    [
-        [1.2, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12]
-    ],
-    [
-        [13, 14, 15, 16],
-        [17, 18, 19, 20],
-        [21, 22, 23, 24]
-    ]
-]
+# input_data = [
+#     [
+#         [1.2, 2, 3, 4],
+#         [5, 6, 7, 8],
+#         [9, 10, 11, 12]
+#     ],
+#     [
+#         [13, 14, 15, 16],
+#         [17, 18, 19, 20],
+#         [21, 22, 23, 24]
+#     ]
+# ]
 
-forward_output = reshape_layer.forward(input_data)
-backward_output = reshape_layer.backward(forward_output, learning_rate=0)  # learning_rate is not used
+# forward_output = reshape_layer.forward(input_data)
+# backward_output = reshape_layer.backward(forward_output, learning_rate=0)  # learning_rate is not used
 
-print(f"::::::::::::::RESHAPE::::::::::::::")
-print("Input Data:")
-print(input_data)
-print("\nForward Output:")
-print(forward_output)
-print("\nBackward Output:")
-print(backward_output)
+# print(f"::::::::::::::RESHAPE::::::::::::::")
+# print("Input Data:")
+# print(input_data)
+# print("\nForward Output:")
+# print(forward_output)
+# print("\nBackward Output:")
+# print(backward_output)
 
 
 

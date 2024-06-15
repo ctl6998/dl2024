@@ -67,7 +67,7 @@ class Algebra:
         depth = len(matrix)
         height = len(matrix[0]) 
         width = len(matrix[0][0])
-        print("::::::::::::::::RECEIVE INPUT::::::::::::::::")
+        print("::::::::::::::::PRINT MATRIX::::::::::::::::")
         print(f"Depth: {depth}, Height: {height}, Width: {width}")
         print("[")
         for d in range(len(matrix)):

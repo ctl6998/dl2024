@@ -1,6 +1,6 @@
 import random
 from layer import Layer
-from helper import Helper
+from convolutional_helper import Helper
 
 # input_shape = (2, 4, 4)  # Example input shape (depth, height, width)
 # kernel_size = 2          # Example kernel size
