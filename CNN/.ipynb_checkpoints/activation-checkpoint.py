@@ -14,11 +14,12 @@ class Activation(Layer):
     def forward(self, input):
         super().forward(input)
         self.input = input
-        # print(input)
-        # Algebra.print_3d_matrix(input)
+        if self.log==True:
+            print(f"Activation input:")
+            Algebra.print_3d_matrix(input)
         if self.log==True:
             print(f"Activation ouput:")
-            Algebra.apply_function(self.activation, self.input)
+            Algebra.print_3d_matrix(Algebra.apply_function(self.activation, self.input))
         return Algebra.apply_function(self.activation, self.input)
 
     ################################## BACKWARD ##################################

@@ -1,23 +1,5 @@
 import math
 
-# def mse(y_true, y_pred):
-#     return sum((true - pred) ** 2 for true, pred in zip(y_true, y_pred)) / len(y_true)
-
-# def mse_derivative(y_true, y_pred):
-#     n = len(y_true)
-#     return [(2 * (pred - true)) / n for true, pred in zip(y_true, y_pred)]
-
-# def binary_cross_entropy(y_true, y_pred):
-#     return sum(-true * math.log(pred) - (1 - true) * math.log(1 - pred) for true, pred in zip(y_true, y_pred)) / len(y_true)
-
-# def binary_cross_entropy_derivative(y_true, y_pred):
-#     n = len(y_true)
-#     return [((1 - true) / (1 - pred) - true / pred) / n for true, pred in zip(y_true, y_pred)]
-
-#y_true and y_pred should be present as a 1D matrix instead of scalar
-
-import math
-
 def mse(y_true, y_pred):
     total_loss = 0.0
     count = 0

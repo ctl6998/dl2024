@@ -81,7 +81,7 @@ x_test, y_test = preprocess_data(x_test, y_test, 100)
 
 network = [
     Convolutional(input_shape=(1, 28, 28), kernel_size=5, depth=5, mode='valid'), #Down to (5,24,24)
-    MaxPooling(pool_size=(2,2), stride=(2,2)), #Down to (5,12, 12)
+    MaxPooling(pool_size=(2,2), stride=2), #Down to (5,12, 12)
     Sigmoid(log=False),
     Reshape(input_shape=(5, 12, 12), output_shape=(720, 1)), 
     Dense(720, 100),
@@ -89,7 +89,6 @@ network = [
     Dense(100, 2),
     Sigmoid(log=False)
 ]
-
 
 train(
     network,

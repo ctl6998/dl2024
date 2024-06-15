@@ -24,8 +24,6 @@ from helper import Helper
 #     for row in bias:
 #         print(" ", row)
 
-
-
 ### FOWARDING
 input_data = [
     [[1, 2, 0, 1],

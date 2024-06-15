@@ -5,6 +5,7 @@ import random
 
 from dense import Dense
 from convolutional import Convolutional
+from pooling import MaxPooling
 from reshape import Reshape
 from activations import Sigmoid
 from losses import binary_cross_entropy, binary_cross_entropy_derivative
@@ -68,11 +69,22 @@ def preprocess_data(x, y, limit):
 x_train, y_train = preprocess_data(x_train, y_train, 100)
 x_test, y_test = preprocess_data(x_test, y_test, 100)
 
+# network = [
+#     Convolutional(input_shape=(1, 28, 28), kernel_size=3, depth=5, mode='valid'),
+#     Sigmoid(log=False),
+#     Reshape(input_shape=(5, 26, 26), output_shape=(3380, 1)), #Output is (5*26*26=3380, 1)
+#     Dense(5 * 26 * 26, 100),
+#     Sigmoid(log=False),
+#     Dense(100, 2),
+#     Sigmoid(log=False)
+# ]
+
 network = [
-    Convolutional(input_shape=(1, 28, 28), kernel_size=3, depth=5, mode='valid'),
+    Convolutional(input_shape=(1, 28, 28), kernel_size=5, depth=5, mode='valid'), #Down to (5,24,24)
+    MaxPooling(pool_size=(2,2), stride=2), #Down to (5,12, 12)
     Sigmoid(log=False),
-    Reshape(input_shape=(5, 26, 26), output_shape=(3380, 1)), #Output is (5*26*26=3380, 1)
-    Dense(5 * 26 * 26, 100),
+    Reshape(input_shape=(5, 12, 12), output_shape=(720, 1)), 
+    Dense(720, 100),
     Sigmoid(log=False),
     Dense(100, 2),
     Sigmoid(log=False)
