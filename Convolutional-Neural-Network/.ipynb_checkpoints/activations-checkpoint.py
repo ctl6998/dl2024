@@ -14,15 +14,26 @@ class Tanh(Activation):
         def tanh_derivative(x):
             return 1 - math.tanh(x) ** 2
 
-        super().__init__(tanh, tanh_derivative)
+        super().__init__(tanh, tanh_derivative, log=log)
 
 class Sigmoid(Activation):
     def __init__(self, log=False):
         def sigmoid(x):
-            return 1 / (1 + math.exp(-x))  
+            return 1 / (1 + math.exp(-x))
         
         def sigmoid_derivative(x):
             s = sigmoid(x)
             return s * (1 - s)
 
         super().__init__(sigmoid, sigmoid_derivative, log=log)
+        
+        
+class ReLU(Activation):
+    def __init__(self):
+        def relu(x):
+            return max(0, x)
+            
+        def relu_derivative(x):
+            return 1 if x > 0 else 0
+
+        super().__init__(relu, relu_derivative, log=log)

@@ -16,7 +16,7 @@ class Activation(Layer):
         self.input = input
         if self.log==True:
             print(f"Activation input:")
-            Algebra.print_3d_matrix(input)
+            Algebra.print_3d_matrix(self.input)
         if self.log==True:
             print(f"Activation ouput:")
             Algebra.print_3d_matrix(Algebra.apply_function(self.activation, self.input))

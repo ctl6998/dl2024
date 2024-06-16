@@ -3,12 +3,16 @@
 This project implements a Convolutional Neural Network (CNN) and a Neural Network (NN) from scratch. The project is organized into multiple modules for clarity and maintainability.
 
 ### How to Run 
+- Make sure you are in correct directory:
 cd /path/to/Convolutional-Neural-Network
 
-python mnist_cnn.py
-
+- Example of a single neural network:
 python mnist_nn.py
 
+- CNN with MNIST dataset for Binary classification, using Sigmoid activation as the last layer:
+python mnist_cnn.py
+
+- CNN with MNIST dataset for Binary class
 
 ### File Descriptions
 

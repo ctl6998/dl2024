@@ -21,6 +21,8 @@ class Dense(Layer):
         # print("::::::::::::::::DENSE/FULLY-CONNECTED LAYER FOWARDING::::::::::::::::")
         self.input = input
         self.output = Algebra.matrix_add(Algebra.matrix_mult(self.weights, self.input), self.bias)
+        # print(f"Dense foward output:")
+        # Algebra.print_3d_matrix(self.output)
         return self.output
     
     ################################## BACKWARDING ##################################
