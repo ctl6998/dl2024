@@ -9,10 +9,16 @@ cd /path/to/Convolutional-Neural-Network
 - Example of a single neural network:
 python mnist_nn.py
 
-- CNN with MNIST dataset for Binary classification, using Sigmoid activation as the last layer:
+- CNN with MNIST dataset using Sigmoid activation as the last layer:
 python mnist_cnn.py
 
-- CNN with MNIST dataset for Binary class
+- CNN with MNIST dataset using Softmax activation as the last layer:
+python mnist_cnn-softmax.py
+
+- Result of pre-training is in:
+/mnist_cnn-softmax.ipynb
+/mnist_cnn.ipynb
+/mnist_nn.ipynb
 
 ### File Descriptions
 
